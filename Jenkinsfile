@@ -13,7 +13,23 @@ pipeline {
         //         git url: 'https://github.com/vishnudestro/my_final_project.git', branch: 'dev'
         //     }
         // }
-        
+        stage('Checking git repo'){
+            steps{
+                script{
+                    echo "Target repository: ${env.TARGET_REPO}"
+
+                    if (env.BRANCH_NAME == 'main') {
+                        echo "main repository"
+                        env.TARGET_REPO = 'prod'
+                    }
+                    else {
+                        echo "dev repository"
+                        env.TARGET_REPO = 'dev'
+                    }
+                }
+            }
+
+        }
         stage('Build Docker Image') {
             steps {
                 script {
@@ -37,13 +53,6 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Condition: Change TARGET_REPO based on the branch name
-                    if (env.BRANCH_NAME == 'main') {
-                        env.TARGET_REPO = 'prod'  // Change to production repo if branch is main
-                    }else {
-                        env.TARGET_REPO = 'dev'  // Default to dev repo for other branches
-                    }
-                    echo "Using repository: ${env.TARGET_REPO}"
                     // Push the Docker image to Docker Hub
                     sh 'docker push ${DOCKER_IMAGE}/${env.TARGET_REPO}'
                 }
