@@ -4,13 +4,23 @@
 docker-compose up -d
 docker ps
 
-#Docker Hub repository name and Image Tags with version
-docker tag mob_shop_project:v1 vishnu2naick/prod
-docker tag mob_shop_project:v1 vishnu2naick/dev
-
 #Docker login
 docker login -u vishnu2naick -p dckr_pat_nm4fLXJHR-4bYLgnn7fgXYqFa-E
 
+# Build your project
+sh 'chmod +x build.sh'
+sh './build.sh'
+
 #Push image to Docker Hub
-docker push vishnu2naick/prod
-docker push vishnu2naick/dev
+if [ $GIT_BRANCH == "origin/dev" ]; then
+
+    docker tag mob_shop_project:v1 vishnu2naick/dev
+    docker push vishnu2naick/dev
+
+elif [ $GIT_BRANCH == "origin/main" ]|[$GIT_BRANCH == "origin/master"]; then
+    sh 'chmod +x build.sh'
+    sh './build.sh'
+
+    docker tag mob_shop_project:v1 vishnu2naick/prod
+    docker push vishnu2naick/prod
+fi
