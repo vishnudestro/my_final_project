@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Build your project
-sh 'chmod +x build.sh'
 sh './build.sh'
 
 #Build Docker Container
@@ -18,8 +17,6 @@ if [ $GIT_BRANCH == "origin/dev" ]; then
     docker push vishnu2naick/dev
 
 elif [ $GIT_BRANCH == "origin/main" ]|[$GIT_BRANCH == "origin/master"]; then
-    sh 'chmod +x build.sh'
-    sh './build.sh'
 
     docker tag mob_shop_project:v1 vishnu2naick/prod
     docker push vishnu2naick/prod
