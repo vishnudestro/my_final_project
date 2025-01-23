@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                sh 'bash build.sh'
+            }
+        }
+        stage('Push Docker Image to Docker-Hub Dev Branch') {
+            when {
+                branch 'dev'
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'vishnu2naick') {
+                        docker.image('vishnu2naick/dev:latest').push()
+                    }
+                }
+            }
+        }
+        stage('Push Docker Image to Docker-Hub Prod Branh') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'vishnu2naick') {
+                        docker.image('vishnu2naick/prod:latest').push()
+                    }
+                }
+            }
+        }
+    }
+}
+
