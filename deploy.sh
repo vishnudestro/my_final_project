@@ -4,19 +4,21 @@
 sh './build.sh'
 
 #Build Docker Container
-docker-compose up -d
-docker ps
+# docker-compose up -d
+# docker ps
 
 #Docker login
 docker login -u vishnu2naick -p dckr_pat_nm4fLXJHR-4bYLgnn7fgXYqFa-E
 
+echo "Branch:{$GIT_BRANCH}"
+
 #Push image to Docker Hub
-if [ $GIT_BRANCH == "origin/dev" ]; then
+if [ $GIT_BRANCH == "dev" ]; then
 
     docker tag mob_shop_project:v1 vishnu2naick/dev
     docker push vishnu2naick/dev
 
-elif [ $GIT_BRANCH == "origin/main" ]|[$GIT_BRANCH == "origin/master"]; then
+elif [ $GIT_BRANCH == "main" ]|[$GIT_BRANCH == "master"]; then
 
     docker tag mob_shop_project:v1 vishnu2naick/prod
     docker push vishnu2naick/prod
