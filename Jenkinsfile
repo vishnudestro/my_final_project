@@ -45,7 +45,7 @@ pipeline {
                     }
                     echo "Using repository: ${env.TARGET_REPO}"
                     // Push the Docker image to Docker Hub
-                    sh 'docker push ${DOCKER_IMAGE}/env.TARGET_REPO'
+                    sh 'docker push ${DOCKER_IMAGE}/${env.TARGET_REPO}'
                 }
             }
         }
